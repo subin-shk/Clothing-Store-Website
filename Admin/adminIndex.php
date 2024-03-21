@@ -1,0 +1,107 @@
+<?php
+session_start();
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+                <!-- Google Web Fonts -->
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Playball&display=swap" rel="stylesheet">
+
+
+
+        <!-- Libraries Stylesheet -->
+        <link href="lib/animate/animate.min.css" rel="stylesheet">
+        <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/owl.carousel.min.css" rel="stylesheet">
+
+            <!--CSS-->
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <!-- script link -->
+    <script src="../assets/js/jquery-3.1.1.slim.min.js"></script>
+  <script src="../assets/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <container class="mainbar">
+
+        <h2 style="margin-top: 25px; margin-left: 15px; font-family: Lucida Handwriting"><span class="text-primary">Clover</span>Emporium</h2>
+        <h6 style="margin-left: 15px;">Admin Panel</h6>
+        <hr style="color:#000;">
+
+        <div class="mainbar-body">
+            <a href="adminDashboard.php"><button class="mainbar-butn">
+                    <i class="fa-solid fa-house"></i>
+                    <p>Dashboard</p>
+                </button>
+            </a>
+            <a href="products.php"><button class="mainbar-butn">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <p>Products</p>
+                </button>
+            </a>
+            <a href="addProduct.php"><button class="mainbar-butn">
+                    <i class="ri-add-circle-fill"></i>
+                    <p>Add Product</p>
+                </button>
+            </a>
+            <!-- <a href="adminCategories.php "><button class="mainbar-butn">
+                    <i class="fa-solid fa-tag"></i>
+                    <p>Categories</p>
+                </button>
+            </a> -->
+            <a href="orders.php "><button class="mainbar-butn">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <p>Orders</p>
+                </button>
+            </a>
+            <a href="users.php "><button class="mainbar-butn">
+                    <i class="ri-user-2-fill"></i>
+                    <p>Users</p>
+                </button>
+            </a>
+            <a href="../logout.php"><button class="mainbar-butn">
+                    <i class="ri-logout-box-fill"></i>
+                    <p>Log Out</p>
+                </button>
+            </a>
+        </div>
+    </container>
+    <!-- <div class="body-main">
+        <p>hello</p>
+    </div> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
