@@ -93,6 +93,11 @@ if(!session_id())
                     $item_id=$item["item_id"];
                     $product_quantity=$item["product_quantity"];
                     
+                        // Check if product_quantity is not set or less than 1
+                    if (!isset($product_quantity) || $product_quantity < 1) {
+                        $product_quantity = 1; // Set it to 1 by default
+                    }
+
                     $sql_item="SELECT * from items where item_id=".$item_id."";
                     $result_item=mysqli_query($conn,$sql_item);
                     $item=mysqli_fetch_assoc($result_item);
@@ -121,13 +126,14 @@ if(!session_id())
 
                     <form method="post" action="handlequan.php?cid='.$cart_id.'" style="width:170px;">
                     
-                    <input type="number" style="width:60px;" class="quantity rounded-pill" name="product_quantity"  value="'.$product_quantity.'" min="1" max="50" onchange="handlequan()" >
+                    <input type="number" style="width:60px;" class="quantity rounded-pill" name="product_quantity"  value="'.$product_quantity.'"  min="1" max="50" onchange="handlequan()" >
                     &nbsp;&nbsp;
                     <input type="submit" name="update_product_quantity" value="Update" class="btn btn-primary rounded-pill">
                     </form>
 
                     </td>
-                    <td class="sum"></td>
+                    <td class="sum" name="sum"></td>
+
                     <td><a href="cartRemove.php?itemid='.$item_id.'" class="btn btn-primary rounded-pill">Remove<a></td>
                     </tr>
                     ';
@@ -152,7 +158,7 @@ if(!session_id())
 <!-- <?php
         if(isset($_POST['update_product_quantity'])) {
             $quantity = $_POST['product_quantity'];
-
+            $total_price = $POST['sum'];
         
             $sql = "UPDATE cart SET product_quantity='$quantity' WHERE item_id='$item_id'";
             
@@ -161,7 +167,16 @@ if(!session_id())
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
+
+            $sql_sum="UPDATE cart SET total_price='$total_price' WHERE item_id='$item_id'";
+            if ($conn->query($sql_sum) === TRUE) {
+                echo "Total Price updated successfully";
+            } else {
+                echo "Error: " . $sql_sum . "<br>" . $conn->error;
+            }
         }
+
+
 ?> -->
 
 <?php
@@ -203,12 +218,7 @@ handlequan();
 
 
 
-
-
-
-
 </script>
-
 
 
 </html>
