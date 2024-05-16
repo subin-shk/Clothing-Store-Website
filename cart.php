@@ -180,8 +180,21 @@ if(!session_id())
 ?> -->
 
 <?php
-require_once('footer.php');
+
+    // Retrieve the data sent via POST
+$dataFromJS = $_POST['total'];
+
+// Process the data as needed
+echo "Received data from JavaScript: " . $dataFromJS;
+
+
 ?>
+
+
+
+<!-- <?php
+require_once('footer.php');
+?> -->
 
 
 
@@ -192,7 +205,7 @@ require_once('footer.php');
 const quan = document.getElementsByClassName("quantity");
 const price = document.getElementsByClassName("price");
 const sums = document.getElementsByClassName("sum");
-const total = document.getElementById("grandtotal")
+const total = document.getElementById("grandtotal");
 
 function handlequan() {
     let finalSum = 0;
@@ -202,6 +215,8 @@ function handlequan() {
         finalSum += sum;
     }
     total.innerHTML = finalSum;
+
+    // document.getElementById("grandtotal").value = finalSum;
 }
 handlequan();
 
@@ -221,4 +236,4 @@ handlequan();
 </script>
 
 
-</html>
+/</html>

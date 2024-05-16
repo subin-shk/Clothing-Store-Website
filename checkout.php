@@ -97,7 +97,7 @@
         <div class="bulit_icon"><img src="assets/images/bulit-icon.png"></div>
         <br>
         <div class="row">
-            <div class="col">
+            <!-- <div class="col"> -->
                     <form autocomplete="off" action="" method="POST" class="container" #signup_form 
                         style="width:550px;height:470px;margin-top:15px;padding:40px;border-radius:10px;background: linear-gradient(rgb(241, 203, 203),#fff); ">
                         
@@ -153,16 +153,22 @@
 
                         <input type="submit" name="order" value="Order now" class="btn btn-primary" style="margin-top: 20px; margin-left: 190px;">
                     </form>
-                </div>
+                <!-- </div> -->
 <!-- DISPLAY ITEM ON CART -->
-                <div class="col">
-                <?php 
+
+
+
+
+<div style="width:250px;">
+                <!-- <div class="col"> -->
+<?php 
             // echo"$userid";
             $sql="SELECT * from cart where id=$userid";
             $result=mysqli_query($conn,$sql);
             $rows=mysqli_num_rows($result);
 
-            
+            $grand_total=0;
+
             if ($rows==0) {
 
                 echo"<div class='empty-cart'><br>
@@ -173,72 +179,47 @@
                 
             }
             else{
-                echo"<div class='nonempty-cart'>
-                <div class='internal-nonempty'>
-                <div class='internal-right' >";
-                echo"<table style='width:700px;height:200px;' cellpadding='20';>
-                    <tr style='border-bottom: 1px #000 solid'>
-                        <th>Image</th>
-                        <th>Item</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        </tr>
-                ";
+                    while ($item=mysqli_fetch_assoc($result)) {
 
-                while($item=mysqli_fetch_assoc($result)){
-                    $cart_id= $item["cart_id"];
-                    $item_id=$item["item_id"];
-                    $product_quantity=$item["product_quantity"];
-                    
+                        // $cart_id= $item["cart_id"];
+                        $item_id=$item["item_id"];
+                        $product_quantity=$item["product_quantity"];
+        
+                        $sql_item="SELECT * from items where item_id=$item_id";
+                        $result_item=mysqli_query($conn,$sql_item);
+                        $item=mysqli_fetch_assoc($result_item);
+                        
+                        $item_name=$item["item_name"];
+                        $item_price=$item["item_price"];
+                        $item_image=$item["item_image"];
+                        echo'
 
-                                            // Check if product_quantity is not set or less than 1
-                                            if (!isset($product_quantity) || $product_quantity < 1) {
-                                                $product_quantity = 1; // Set it to 1 by default
-                                            }
-
-                    $sql_item="SELECT * from items where item_id=".$item_id."";
-                    $result_item=mysqli_query($conn,$sql_item);
-                    $item=mysqli_fetch_assoc($result_item);
-                    
-                    $item_name=$item["item_name"];
-                    $item_price=$item["item_price"];
-                    $item_image=$item["item_image"];
-                    
-
-
-                    echo'
-                    <tr>
-                    <td><img style="height:100px; width: 100px; border-radius:20px;padding-bottom:5px;" src="assets/images/products/'.$item_image.'"</td>
-                    <td>'.$item_name.'</td>
-                    <td class="price">'.$item_price.'</td>
-                    <td>
-
-                    
-                    
-
-                    <input type="number" style="width:60px; border:none;" class="quantity rounded-pill" name="product_quantity"  value="'.$product_quantity.'" disabled>
-                    &nbsp;&nbsp;
-
-
-                    </td>
-                    <td class="sum"></td>
-                 
-                    </tr>
+                        <div class="items">
+                        <div>
+                            <img src="assets/images/products/'.$item_image.'" alt="image" style="height:70px;width:70px;border-radius:10px;object-fit:cover;">
+                        </div>
+                        <div>
+                            <h5>'.$item_name.'</h5>
+                            <div style="display:flex;justify-content:space-between;gap:10px;">
+                            <h6>Price: '.$item_price.'</h6>
+                            <h6>Quantity: '.$product_quantity.'</h6>
+                            </div>
+                        </div>
+                        
+                        <h5>Total: '.$item_price*$product_quantity.'</h5>
+                        
+                    </div>
                     ';
-
+                    $grand_total+=$item_price*$product_quantity; 
+                    }
+                    echo'
+                    </div>
+                    <div style="position:absolute;right:10px;bottom:2px;"><h4 style="color:red;font-weight:bold;">Grand-Total: '.$grand_total.'</h4></div>
+                    ';
                 }
-                echo '</table></div>
-                
-                <div class="total-div">Grand Total: <p id="grandtotal" name="grandtotal">'.$grand_total.'</p></div>
-
-                
-                </div>
-                ';
-                
 
 
-        }
+        
         ?>
 
                 </div>
@@ -246,8 +227,20 @@
     </div>
 
 
-    <script>
-const quan = document.getElementsByClassName("quantity");
+
+
+
+
+
+
+
+    <?php require_once("footer.php");  ?>
+
+</body>
+
+
+<script>
+const quan = document.getElchementsByClassName("quantity");
 const price = document.getElementsByClassName("price");
 const sums = document.getElementsByClassName("sum");
 const total = document.getElementById("grandtotal")
@@ -265,11 +258,5 @@ handlequan();
 
 
 
-
-
-
-    <?php require_once("footer.php");  ?>
-
-</body>
 
 </html>
