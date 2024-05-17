@@ -69,7 +69,7 @@ if(!session_id())
 
                 echo"<div class='empty-cart'><br>
                 <h3>Cart is empty.</h3><br>
-                <a href='products.php' class='btn btn-primary' style='margin: 0 auto; margin-top:20px; width: auto; padding: 15px;'>Add items</a><br><br>
+                <a href='womens.php' class='btn btn-primary' style='margin: 0 auto; margin-top:20px; width: auto; padding: 15px;'>Add items</a><br><br>
                 </div>
                 ";
                 
@@ -179,16 +179,7 @@ if(!session_id())
 
 ?> -->
 
-<?php
 
-    // Retrieve the data sent via POST
-$dataFromJS = $_POST['total'];
-
-// Process the data as needed
-echo "Received data from JavaScript: " . $dataFromJS;
-
-
-?>
 
 
 
