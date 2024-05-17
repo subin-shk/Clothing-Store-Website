@@ -140,7 +140,7 @@ if(!session_id())
 
                 }
                 echo '</table></div>
-                <div class="total-div">Grand Total:<p id="grandtotal" name="grandtotal"></p>
+                <div class="total-div"><h1>Grand Total:</h1> <h3><p id="grandtotal" name="grandtotal"></p></h3> 
                 
                 <a href="womens.php" id="buy-more-button" class="btn btn-primary" style="padding:10px;">Buy more</a>
                 
@@ -205,7 +205,7 @@ function handlequan() {
         sums[i].innerHTML = sum;
         finalSum += sum;
     }
-    total.innerHTML = finalSum;
+    total.innerHTML = "Rs. "+finalSum+"/-";
 
     // document.getElementById("grandtotal").value = finalSum;
 }

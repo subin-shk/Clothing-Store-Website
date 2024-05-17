@@ -218,7 +218,9 @@
                                     <hr style="color:black;">
                                     <div class="row">
                                         <h2 style="text-align:center; font-weight:bold;">Grand-Total: Rs. '.$grand_total.'/-</h2>
+                                        <a href="cart.php" class="btn btn-primary" style="margin-top:10px; padding:10px; font-weight:bold;" >Back to Cart</a>
                                     </div>
+                                    
 </div>
                                     
                                 ';
