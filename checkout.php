@@ -1,36 +1,91 @@
 <?php
+@include 'db_conn.php';
 
+session_start();
 
-    @include 'db_conn.php';
-    
-    session_start();
-    
-    if(isset($_POST['order'])){
+if (isset($_POST['order'])) {
     // Retrieve form data
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $address= $_POST['address'];
+    $address = $_POST['address'];
     $state = $_POST['state'];
     $country = $_POST['country'];
     $phone = $_POST['phone'];
     $method = $_POST['method'];
+    $userid = $_SESSION['userid'];
 
-        // Insert order into database
-        $query = "INSERT INTO orders (name, email,address,state,country,phone_no,payment_method) VALUES ('$name', '$email','$address','$state','$country','$phone','$method')";
-        $result = mysqli_query($conn, $query);
-        
-        if ($result) {
-            echo "Order placed successfully!";
-        } else {
-            echo "Error: " . mysqli_error($conn);
+    // Insert order into database
+    $query = "INSERT INTO userorder (id, name, email, address, state, country, phone_no, payment_method, status) VALUES ('$userid', '$name', '$email', '$address', '$state', '$country', '$phone', '$method', 'pending')";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        // Get the ID of the newly inserted order
+        $order_id = mysqli_insert_id($conn);
+
+        // Retrieve items from cart and insert into order_items
+        $cart_query = "SELECT * FROM cart WHERE id = '$userid'";
+        $cart_result = mysqli_query($conn, $cart_query);
+
+        while ($cart_item = mysqli_fetch_assoc($cart_result)) {
+            $item_id = $cart_item['item_id'];
+            $quantity = $cart_item['product_quantity'];
+
+            $item_query = "SELECT * FROM items WHERE item_id = '$item_id'";
+            $item_result = mysqli_query($conn, $item_query);
+            $item = mysqli_fetch_assoc($item_result);
+
+            $item_name = $item['item_name'];
+            $item_price = $item['item_price'];
+
+            $order_item_query = "INSERT INTO order_items (order_id, item_id, item_name, item_price, quantity) VALUES ('$order_id', '$item_id', '$item_name', '$item_price', '$quantity')";
+            mysqli_query($conn, $order_item_query);
         }
 
-    
-
+        // Redirect to order_placed.php with the order_id
+        header("Location: order_placed.php?order_id=$order_id");
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($conn);
     }
-
-
+}
 ?>
+
+
+
+
+
+<?php
+if( $_SERVER['REQUEST_METHOD'] == 'POST')
+{
+	$item_id = $_POST['item_id'];
+	$sql = "SELECT * FROM items WHERE item_id='$item_id'";
+	$result = mysqli_query($conn, $sql);
+	if($result)
+	{
+		if ( mysqli_num_rows($result) == 1)
+		{
+			$product = mysqli_fetch_assoc($result);
+			$invoice_no = $product['id'] . time();
+			$total  = $product['amount'];
+			$created_at = date('Y-m-d H:i:s');
+			$query = "INSERT INTO orders(product_id,invoice_no, total, status, created_at )
+					VALUES( '$product_id','$invoice_no', '$total', 0, '$created_at')";
+			if( !mysqli_query($conn, $query))
+			{
+				die('Error!');
+			}
+		}
+	}
+}
+?>
+
+
+
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,14 +147,102 @@
         
     ?>
     <div id="checkout-main-div container" style="margin: 100px 0;">
+
         
         <h1 style="text-align:center;">Checkout</h1>
         <div class="bulit_icon"><img src="assets/images/bulit-icon.png"></div>
         <br>
         <div class="row">
+
+            
+<div class="col" style="margin-left:100px; padding:0 50px;border-radius:10px;background: linear-gradient(rgb(241, 203, 203),#fff); ">
+    <!-- <div class="row" > -->
+            <h1 style="text-align:center; margin-top:10px;">Products</h1>
+            <hr style="color:black;">
+                <?php 
+                 
+                    // echo"$userid";
+                    $sql="SELECT * from cart where id=$userid";
+                    $result=mysqli_query($conn,$sql);
+                    $rows=mysqli_num_rows($result);
+
+                    $grand_total=0;
+
+
+                       
+                            while ($item=mysqli_fetch_assoc($result)) {
+
+                                // $cart_id= $item["cart_id"];
+                                $item_id=$item["item_id"];
+                                $product_quantity=$item["product_quantity"];
+
+                                                        // Check if product_quantity is not set or less than 1
+                                if (!isset($product_quantity) || $product_quantity < 1) {
+                                    $product_quantity = 1; // Set it to 1 by default
+                                }
+                        
+                                $sql_item="SELECT * from items where item_id=$item_id";
+                                $result_item=mysqli_query($conn,$sql_item);
+                                $item=mysqli_fetch_assoc($result_item);
+                                        
+                                $item_name=$item["item_name"];
+                                $item_price=$item["item_price"];
+                                $item_image=$item["item_image"];
+                                echo'
+                                    
+                                <div style=" width:500px;">        
+                                    <div class="items" style="float:left; width:130px; margin-top:15px;">
+                                        <div>
+                                            <img src="assets/images/products/'.$item_image.'" alt="image" style="height:90px;width:90px;border-radius:10px;object-fit:cover;">
+                                        </div>
+                                        
+                                        <p style="width:90px; color: black;">
+                                           
+                                            <b>Price:</b> '.$item_price.'<br>
+                                            <b>Quantity:</b> '.$product_quantity.'<br>
+                                            
+                                        
+                                        
+                                        <b>Total:</b> '.$item_price*$product_quantity.'
+                                        </p>
+                                        </div>
+                                    </div>
+                                        
+                                    ';
+                                    $grand_total+=$item_price*$product_quantity; 
+                                    }
+                                    echo'
+                                    
+                                    
+                                    <div class="row">
+                                        <h2 style="text-align:center; font-weight:bold; margin-top:25px;">Grand-Total: <br>Rs. '.$grand_total.'/-</h2>
+                                        <a href="cart.php" class="btn btn-primary " style="margin-top:10px; margin-left:10px; padding:10px; font-weight:bold;" >Back to Cart</a>
+                                    </div>
+                                    
+</div>
+                                    
+                                ';
+                        
+
+
+                        
+                ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="col">
-                    <form autocomplete="off" action="" method="POST" class="" #signup_form 
-                        style="width:550px;height:470px;margin-left:100px;padding:40px;border-radius:10px;background: linear-gradient(rgb(241, 203, 203),#fff); ">
+                    <form action="https://uat.esewa.com.np/epay/main" method="POST" autocomplete="off"  class="" 
+                        style="width:550px;height:470px;margin-right:100px;padding:40px;border-radius:10px;background: linear-gradient(rgb(241, 203, 203),#fff); ">
                         
                             <p class="text-dark text-center bg-light border border-primary rounded-pill">Place your order</p>
                         
@@ -140,7 +283,7 @@
                             <label for="exampleInputPassword1">Phone no.</label>
                             <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your Phone no." required>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="payment">Payment Method</label>
                             
                             <select name="method" class="form-control" required>
@@ -149,10 +292,49 @@
                                 <option value="e-sewa"><a href="https://esewa.com.np/">e-sewa</a></option>
                                 <option value="khalti"><a href="https://khalti.com/">khalti</a></option>
                             </select>
-                        </div>
+                        </div> -->
 
-                        <input type="submit" name="order" value="Order now" class="btn btn-primary" style="margin-top: 20px; margin-left: 190px;">
+                       
+
+                        <!-- ESEWA PAYMENT INTEGRATION -->
+										<input value="<?php echo $grand_total;?>" name="tAmt" type="hidden">
+										<input value="<?php echo $grand_total;?>" name="amt" type="hidden">
+										<input value="0" name="txAmt" type="hidden">
+										<input value="0" name="psc" type="hidden">
+										<input value="0" name="pdc" type="hidden">
+										<input value="epay_payment" name="scd" type="hidden">
+										<input value="<?php echo $invoice_no;?>" name="pid" type="hidden">
+										<input value="http://localhost/Clothing%20Store%20Website%20(Web%20Project)/esewa_payment_success.php" type="hidden" name="su">
+										<input value="http://localhost/Clothing%20Store%20Website%20(Web%20Project)/esewa_payment_failed.php" type="hidden" name="fu">
+                                        <div style="margin-top:25px;">
+                                        <label style="float:left; margin-top:5px; margin-right:15px;">Order now with:</label>
+										<input type="image" src="assets/images/esewa.png" style="border:1px solid green; border-radius:8px; float:left;">
+                                        </div>
+
+
+                       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- <input type="submit" name="order" value="Order now" class="btn btn-primary" style="margin-top: 20px; margin-left: 190px;"> -->
                     </form>
+                    
+
                 </div>
 <!-- DISPLAY ITEM ON CART -->
 
@@ -160,75 +342,6 @@
 
 
 
-<div class="col" style="margin-right:100px; padding:0 50px;border-radius:10px;background: linear-gradient(rgb(241, 203, 203),#fff); ">
-    <div class="row" >
-            <h1 style="text-align:center;">Items</h1>
-            <hr style="color:black;">
-                <?php 
-                    // echo"$userid";
-                    $sql="SELECT * from cart where id=$userid";
-                    $result=mysqli_query($conn,$sql);
-                    $rows=mysqli_num_rows($result);
-
-                    $grand_total=0;
-
-
-                       
-                            while ($item=mysqli_fetch_assoc($result)) {
-
-                                // $cart_id= $item["cart_id"];
-                                $item_id=$item["item_id"];
-                                $product_quantity=$item["product_quantity"];
-
-                                                        // Check if product_quantity is not set or less than 1
-                                if (!isset($product_quantity) || $product_quantity < 1) {
-                                    $product_quantity = 1; // Set it to 1 by default
-                                }
-                        
-                                $sql_item="SELECT * from items where item_id=$item_id";
-                                $result_item=mysqli_query($conn,$sql_item);
-                                $item=mysqli_fetch_assoc($result_item);
-                                        
-                                $item_name=$item["item_name"];
-                                $item_price=$item["item_price"];
-                                $item_image=$item["item_image"];
-                                echo'
-                                    
-                                        
-                                    <div class="items" style="float:left; width:130px; margin-top:15px;">
-                                        <div>
-                                            <img src="assets/images/products/'.$item_image.'" alt="image" style="height:90px;width:90px;border-radius:10px;object-fit:cover;">
-                                        </div>
-                                        
-                                        <p style="width:90px; color: black;">
-                                           
-                                            <b>Price:</b> '.$item_price.'<br>
-                                            <b>Quantity:</b> '.$product_quantity.'<br>
-                                            
-                                        
-                                        
-                                        <b>Total:</b> '.$item_price*$product_quantity.'
-                                        </p>
-    </div>
-                                        
-                                    ';
-                                    $grand_total+=$item_price*$product_quantity; 
-                                    }
-                                    echo'
-                                    <hr style="color:black;">
-                                    <div class="row">
-                                        <h2 style="text-align:center; font-weight:bold;">Grand-Total: Rs. '.$grand_total.'/-</h2>
-                                        <a href="cart.php" class="btn btn-primary" style="margin-top:10px; padding:10px; font-weight:bold;" >Back to Cart</a>
-                                    </div>
-                                    
-</div>
-                                    
-                                ';
-                        
-
-
-                        
-                ?>
                 
                 </div>
              </div>

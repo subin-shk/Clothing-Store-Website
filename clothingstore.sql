@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2024 at 04:27 PM
+-- Generation Time: Jul 01, 2024 at 02:33 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -32,34 +32,34 @@ CREATE TABLE `cart` (
   `item_id` int(11) NOT NULL,
   `id` int(11) NOT NULL,
   `product_quantity` int(11) NOT NULL,
-  `quan_id` int(11) DEFAULT NULL
+  `quan_id` int(11) DEFAULT NULL,
+  `total_price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `cart`
 --
 
-INSERT INTO `cart` (`cart_id`, `item_id`, `id`, `product_quantity`, `quan_id`) VALUES
-(21, 5, 5, 3, NULL),
-(26, 1, 4, 1, NULL),
-(29, 1, 5, 2, NULL),
-(30, 4, 4, 3, NULL),
-(31, 14, 4, 2, NULL),
-(32, 34, 8, 1, NULL),
-(33, 12, 8, 2, NULL),
-(34, 4, 9, 1, NULL),
-(35, 11, 9, 3, NULL),
-(36, 12, 10, 2, NULL),
-(37, 12, 11, 2, NULL),
-(38, 28, 11, 3, NULL),
-(39, 12, 12, 2, NULL),
-(40, 2, 12, 1, NULL),
-(41, 12, 15, 2, NULL),
-(42, 28, 15, 3, NULL),
-(43, 12, 17, 2, NULL),
-(44, 28, 17, 3, NULL),
-(45, 12, 19, 2, NULL),
-(46, 2, 19, 1, NULL);
+INSERT INTO `cart` (`cart_id`, `item_id`, `id`, `product_quantity`, `quan_id`, `total_price`) VALUES
+(21, 5, 5, 3, NULL, NULL),
+(26, 1, 4, 1, NULL, NULL),
+(29, 1, 5, 2, NULL, NULL),
+(31, 14, 4, 2, NULL, NULL),
+(32, 34, 8, 1, NULL, NULL),
+(33, 12, 8, 2, NULL, NULL),
+(35, 11, 9, 3, NULL, NULL),
+(36, 12, 10, 2, NULL, NULL),
+(37, 12, 11, 2, NULL, NULL),
+(38, 28, 11, 3, NULL, NULL),
+(39, 12, 12, 2, NULL, NULL),
+(41, 12, 15, 2, NULL, NULL),
+(42, 28, 15, 3, NULL, NULL),
+(43, 12, 17, 2, NULL, NULL),
+(44, 28, 17, 3, NULL, NULL),
+(45, 12, 19, 2, NULL, NULL),
+(55, 4, 13, 1, NULL, NULL),
+(57, 10, 13, 2, NULL, NULL),
+(60, 4, 7, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -138,28 +138,84 @@ INSERT INTO `items` (`item_id`, `item_name`, `item_image`, `item_price`, `produc
 --
 
 CREATE TABLE `orders` (
-  `order_id` int(11) NOT NULL,
   `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `address` varchar(50) NOT NULL,
-  `state` varchar(50) NOT NULL,
-  `country` varchar(50) NOT NULL,
-  `phone_no` varchar(50) NOT NULL,
-  `payment_method` varchar(50) NOT NULL,
-  `order_date` date NOT NULL DEFAULT current_timestamp(),
-  `total_price` int(11) DEFAULT NULL
+  `invoice_no` varchar(100) DEFAULT NULL,
+  `product_id` int(11) NOT NULL,
+  `total` float NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_name` varchar(255) NOT NULL,
+  `item_price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `orders`
+-- Dumping data for table `order_items`
 --
 
-INSERT INTO `orders` (`order_id`, `id`, `name`, `email`, `address`, `state`, `country`, `phone_no`, `payment_method`, `order_date`, `total_price`) VALUES
-(3, 0, 'Ram Prasad', 'ram@gmail.com', 'Kalimati', 'Bagmati', 'Nepal', '9841943213', 'cash on delivery', '2024-02-14', NULL),
-(4, 0, 'hari maya', 'hari@gmail.com', 'paknajol', 'bagmati', 'nepal', '9812345673', 'e-sewa', '2024-02-14', NULL),
-(6, 0, 'Suion', 'sui@gmail.com', 'Kalimati', 'Bagmati', 'Nepal', '982384531', 'e-sewa', '2024-02-15', NULL),
-(19, 0, 'Luffy', 'luffy@gmail.com', 'Paknajol', 'Bagmati', 'Nepal', '9821347852', 'cash on delivery', '2024-02-18', NULL);
+INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `item_name`, `item_price`, `quantity`) VALUES
+(1, 3, 4, 'Black Long Sleeve Crop Top', '500.00', 0),
+(2, 4, 4, 'Black Long Sleeve Crop Top', '500.00', 1),
+(3, 4, 2, 'Black Party Dress', '2250.00', 0),
+(4, 4, 10, 'Midi Black Brown Long Skirt', '1050.00', 0),
+(5, 4, 9, 'Denim Shorts High Waist Pants', '650.00', 0),
+(6, 4, 7, 'Warm Knitted Turtle Neck Sweat', '1199.00', 0),
+(7, 4, 33, 'Michael Slim-Fit Suit in Blue', '3250.00', 0),
+(8, 5, 4, 'Black Long Sleeve Crop Top', '500.00', 1),
+(9, 5, 2, 'Black Party Dress', '2250.00', 0),
+(10, 5, 10, 'Midi Black Brown Long Skirt', '1050.00', 0),
+(11, 5, 9, 'Denim Shorts High Waist Pants', '650.00', 0),
+(12, 5, 7, 'Warm Knitted Turtle Neck Sweat', '1199.00', 0),
+(13, 5, 33, 'Michael Slim-Fit Suit in Blue', '3250.00', 0),
+(14, 6, 4, 'Black Long Sleeve Crop Top', '500.00', 1),
+(15, 6, 2, 'Black Party Dress', '2250.00', 0),
+(16, 6, 10, 'Midi Black Brown Long Skirt', '1050.00', 0),
+(17, 6, 9, 'Denim Shorts High Waist Pants', '650.00', 0),
+(18, 6, 7, 'Warm Knitted Turtle Neck Sweat', '1199.00', 0),
+(19, 6, 33, 'Michael Slim-Fit Suit in Blue', '3250.00', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userorder`
+--
+
+CREATE TABLE `userorder` (
+  `order_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `phone_no` varchar(20) NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `status` varchar(20) DEFAULT 'pending',
+  `order_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `userorder`
+--
+
+INSERT INTO `userorder` (`order_id`, `id`, `name`, `email`, `address`, `state`, `country`, `phone_no`, `payment_method`, `status`, `order_date`) VALUES
+(3, 7, 'ran', 'ar@gmail.com', '1daads', 'asad', 'dsfaf', '234234234', 'cash on delivery', 'pending', '2024-05-17 09:05:22'),
+(4, 13, 'Ramesh', 'rame@gmail.com', 'sada', 'zd', 'dcs', '1312', 'e-sewa', 'pending', '2024-06-09 12:55:54'),
+(5, 13, 'ad', 'asd@gmail.cpm', 'sad', 'asdasd', 'sda', 'sad', 'e-sewa', 'pending', '2024-06-09 14:40:39'),
+(6, 13, 'asd', 'asd@gmail.com', 'asd', 'asd', 'asd', '24124', '', 'pending', '2024-06-09 19:17:46');
 
 -- --------------------------------------------------------
 
@@ -212,7 +268,22 @@ ALTER TABLE `items`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`order_id`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `item_id` (`item_id`);
+
+--
+-- Indexes for table `userorder`
+--
+ALTER TABLE `userorder`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `users`
@@ -228,7 +299,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -240,13 +311,25 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `userorder`
+--
+ALTER TABLE `userorder`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -263,6 +346,19 @@ ALTER TABLE `users`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `item_connection` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `userorder` (`order_id`),
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`);
+
+--
+-- Constraints for table `userorder`
+--
+ALTER TABLE `userorder`
+  ADD CONSTRAINT `userorder_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

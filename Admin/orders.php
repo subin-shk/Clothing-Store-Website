@@ -45,7 +45,7 @@
         include '../db_conn.php';
 
         // Query to fetch orders
-        $query = "SELECT * FROM orders";
+        $query = "SELECT * FROM userorder";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {

@@ -143,6 +143,10 @@ if(!session_id())
                 <div class="total-div"><h1>Grand Total:</h1> <h3><p id="grandtotal" name="grandtotal"></p></h3> 
                 
                 <a href="womens.php" id="buy-more-button" class="btn btn-primary" style="padding:10px;">Buy more</a>
+
+
+
+                <input type="hidden" name="item_id" value="'.$item_id.'">
                 
                 <a href="checkout.php" class="btn btn-primary" style="margin-top:10px; padding:10px;" >Check Out</a></div>
                 
