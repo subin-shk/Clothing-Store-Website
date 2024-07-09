@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2024 at 02:33 PM
+-- Generation Time: Jul 09, 2024 at 09:38 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -59,28 +59,9 @@ INSERT INTO `cart` (`cart_id`, `item_id`, `id`, `product_quantity`, `quan_id`, `
 (45, 12, 19, 2, NULL, NULL),
 (55, 4, 13, 1, NULL, NULL),
 (57, 10, 13, 2, NULL, NULL),
-(60, 4, 7, 0, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `categories`
---
-
-CREATE TABLE `categories` (
-  `category_id` int(11) NOT NULL,
-  `category_name` varchar(30) NOT NULL,
-  `date` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`category_id`, `category_name`, `date`) VALUES
-(1, 'Women', '2024-02-07'),
-(2, 'Men', '2024-02-07'),
-(3, 'Kids', '2024-02-07');
+(60, 4, 7, 0, NULL, NULL),
+(70, 6, 20, 0, NULL, NULL),
+(71, 7, 20, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -134,88 +115,31 @@ INSERT INTO `items` (`item_id`, `item_name`, `item_image`, `item_price`, `produc
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Table structure for table `userorders`
 --
 
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `invoice_no` varchar(100) DEFAULT NULL,
-  `product_id` int(11) NOT NULL,
-  `total` float NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_items`
---
-
-CREATE TABLE `order_items` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `userorders` (
   `order_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `item_name` varchar(255) NOT NULL,
-  `item_price` decimal(10,2) NOT NULL,
-  `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `item_name`, `item_price`, `quantity`) VALUES
-(1, 3, 4, 'Black Long Sleeve Crop Top', '500.00', 0),
-(2, 4, 4, 'Black Long Sleeve Crop Top', '500.00', 1),
-(3, 4, 2, 'Black Party Dress', '2250.00', 0),
-(4, 4, 10, 'Midi Black Brown Long Skirt', '1050.00', 0),
-(5, 4, 9, 'Denim Shorts High Waist Pants', '650.00', 0),
-(6, 4, 7, 'Warm Knitted Turtle Neck Sweat', '1199.00', 0),
-(7, 4, 33, 'Michael Slim-Fit Suit in Blue', '3250.00', 0),
-(8, 5, 4, 'Black Long Sleeve Crop Top', '500.00', 1),
-(9, 5, 2, 'Black Party Dress', '2250.00', 0),
-(10, 5, 10, 'Midi Black Brown Long Skirt', '1050.00', 0),
-(11, 5, 9, 'Denim Shorts High Waist Pants', '650.00', 0),
-(12, 5, 7, 'Warm Knitted Turtle Neck Sweat', '1199.00', 0),
-(13, 5, 33, 'Michael Slim-Fit Suit in Blue', '3250.00', 0),
-(14, 6, 4, 'Black Long Sleeve Crop Top', '500.00', 1),
-(15, 6, 2, 'Black Party Dress', '2250.00', 0),
-(16, 6, 10, 'Midi Black Brown Long Skirt', '1050.00', 0),
-(17, 6, 9, 'Denim Shorts High Waist Pants', '650.00', 0),
-(18, 6, 7, 'Warm Knitted Turtle Neck Sweat', '1199.00', 0),
-(19, 6, 33, 'Michael Slim-Fit Suit in Blue', '3250.00', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `userorder`
---
-
-CREATE TABLE `userorder` (
-  `order_id` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `state` varchar(255) NOT NULL,
   `country` varchar(255) NOT NULL,
-  `phone_no` varchar(20) NOT NULL,
+  `phone` varchar(20) NOT NULL,
   `payment_method` varchar(50) NOT NULL,
-  `status` varchar(20) DEFAULT 'pending',
+  `total_amount` decimal(10,2) NOT NULL,
   `order_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `userorder`
+-- Dumping data for table `userorders`
 --
 
-INSERT INTO `userorder` (`order_id`, `id`, `name`, `email`, `address`, `state`, `country`, `phone_no`, `payment_method`, `status`, `order_date`) VALUES
-(3, 7, 'ran', 'ar@gmail.com', '1daads', 'asad', 'dsfaf', '234234234', 'cash on delivery', 'pending', '2024-05-17 09:05:22'),
-(4, 13, 'Ramesh', 'rame@gmail.com', 'sada', 'zd', 'dcs', '1312', 'e-sewa', 'pending', '2024-06-09 12:55:54'),
-(5, 13, 'ad', 'asd@gmail.cpm', 'sad', 'asdasd', 'sda', 'sad', 'e-sewa', 'pending', '2024-06-09 14:40:39'),
-(6, 13, 'asd', 'asd@gmail.com', 'asd', 'asd', 'asd', '24124', '', 'pending', '2024-06-09 19:17:46');
+INSERT INTO `userorders` (`order_id`, `user_id`, `name`, `email`, `address`, `state`, `country`, `phone`, `payment_method`, `total_amount`, `order_date`) VALUES
+(14, 13, 'Cleo', 'cleo@gmail.com', 'Paknajol', 'Bagmati', 'Nepal', '9841235643', 'e-sewa', '2600.00', '2024-07-08 17:16:20'),
+(15, 19, 'Luffy', 'luff@gmail.com', 'Kalanki', 'Bagmati', 'Nepal', '984126453', 'cash-on-delivery', '1900.00', '2024-07-08 17:17:36'),
+(16, 20, 'Alice', 'alice@gmail.com', 'Newroad', 'Bagmati', 'Nepal', '984325138', 'cash-on-delivery', '1000.00', '2024-07-08 17:28:11');
 
 -- --------------------------------------------------------
 
@@ -238,7 +162,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `user_type`) VALUES
 (7, 'Ryeo', 'ryeo@gmail.com', '1234', 'admin'),
 (13, 'cleo', 'cleo@gmail.com', '1234', 'user'),
-(19, 'Luffy', 'luffy@gmail.com', '1234', 'user');
+(19, 'Luffy', 'luffy@gmail.com', '1234', 'user'),
+(20, 'Alice', 'alice@gmail.com', '1234', 'user');
 
 --
 -- Indexes for dumped tables
@@ -253,37 +178,17 @@ ALTER TABLE `cart`
   ADD KEY `item_connection` (`item_id`);
 
 --
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`category_id`);
-
---
 -- Indexes for table `items`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`item_id`);
 
 --
--- Indexes for table `orders`
+-- Indexes for table `userorders`
 --
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `order_items`
---
-ALTER TABLE `order_items`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `item_id` (`item_id`);
-
---
--- Indexes for table `userorder`
---
-ALTER TABLE `userorder`
+ALTER TABLE `userorders`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `id` (`id`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -299,13 +204,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
-
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `items`
@@ -314,28 +213,16 @@ ALTER TABLE `items`
   MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT for table `userorders`
 --
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `order_items`
---
-ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `userorder`
---
-ALTER TABLE `userorder`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `userorders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
@@ -348,17 +235,10 @@ ALTER TABLE `cart`
   ADD CONSTRAINT `item_connection` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `order_items`
+-- Constraints for table `userorders`
 --
-ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `userorder` (`order_id`),
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`);
-
---
--- Constraints for table `userorder`
---
-ALTER TABLE `userorder`
-  ADD CONSTRAINT `userorder_ibfk_1` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
+ALTER TABLE `userorders`
+  ADD CONSTRAINT `userorders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

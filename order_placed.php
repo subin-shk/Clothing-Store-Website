@@ -62,6 +62,7 @@ $result_products = mysqli_query($conn, $query_products);
   <script src="assets/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <script>alert "Order Placed Successfully";</script>
     <?php include("header.php"); ?>
     <div class="container">
         <h1>Order Details</h1>

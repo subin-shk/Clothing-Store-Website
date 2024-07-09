@@ -11,6 +11,7 @@
 			<div class="alert alert-danger">
 				You have cancelled your payment.		
 			</div>
+			<a href="index.php" class="btn btn-primary border-0 rounded-pill py-3 px-4 px-md-5">Return to Home</a>
 			
 		</div>
 

@@ -25,7 +25,11 @@ if(!session_id())
                 header("location:cart.php");           
             }
             else{
-                header("location:index.php?status=aa#explore-section");
+                
+                echo "<script>alert('Product already in cart');
+                window.location.href='cart.php';
+                </script>"; 
+                // header("location:cart.php");
             }
         
        

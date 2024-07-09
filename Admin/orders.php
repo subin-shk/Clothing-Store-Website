@@ -29,15 +29,16 @@
 
         <table cellpadding=15 class="text-dark text-center border border-dark" style="margin:0 auto;  padding:20px; background: linear-gradient(rgb(241, 203, 203),#fff);">
         <tr style="border-bottom:1px solid #000;">
-            
-            <th>Name</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>State</th>
-            <th>Country</th>
-            <th>Phone no.</th>
-            <th>Payment Method</th>
-            <th>Order Date</th>
+        
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>State</th>
+                                <th>Country</th>
+                                <th>Phone</th>
+                                <th>Payment Method</th>
+                                <th>Total Amount</th>
+                                <th>Order Date</th>
         </tr>
 
         <?php
@@ -45,7 +46,7 @@
         include '../db_conn.php';
 
         // Query to fetch orders
-        $query = "SELECT * FROM userorder";
+        $query = "SELECT * FROM userorders";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
@@ -58,9 +59,12 @@
                 echo "<td>" . $row['address'] . "</td>";
                 echo "<td>" . $row['state'] . "</td>";
                 echo "<td>" . $row['country'] . "</td>";
-                echo "<td>" . $row['phone_no'] . "</td>";
+                echo "<td>" . $row['phone'] . "</td>";
                 echo "<td>" . $row['payment_method'] . "</td>";
+                echo "<td>" . $row['total_amount'] . "</td>";
                 echo "<td>" . $row['order_date'] . "</td>"; // Assuming you have a timestamp for order creation
+
+   
                 echo "</tr>";
             }
         } else {
